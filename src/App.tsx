@@ -72,21 +72,22 @@ function App() {
 	};
 
 	return (
-		<div>
-			<h1>Por favor, suba su archivo credential.json</h1>
-			<div>
-				Result: {credential && <Text> {isValid ? "Usuario logueado correctamente" : "Por favor enviar credenciales"}</Text>}
-			</div>
+		<div className="cardWhiteProfile">
+			<h1>ZK Firma Digital</h1>
+			<h4>
+			    Por favor increse su credential.json
+			</h4>
+			<h5>
+				{credential && <Text> {isValid ? "☑️ Usuario logueado correctamente" : "Por favor enviar credenciales"}</Text>}
+			</h5>
 			<div>
 				{/* Input for uploading two files */}
-				<input type="file" accept=".json" multiple onChange={handleFileUpload} className="App-header"/>
+				<input type="file" accept=".json" multiple onChange={handleFileUpload}/>
 			</div>
 			<div>
 				{/* Display error message if any */}
 				{error.length > 0 && <p style={{ color: "red" }}>{error}</p>}
-				<header className="App-header">
-					<Button.Outline onClick={runProofs}>Comprobar Credenciales ZK</Button.Outline>
-				</header>
+				<Button.Outline onClick={runProofs}>Comprobar Credenciales ZK</Button.Outline>
 			</div>
 		</div>
 	);
