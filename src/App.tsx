@@ -22,9 +22,9 @@ const verifyProof = async (_verificationkey: string, publicSignals: any, proof: 
 };
 
 function App() {
-	const [proof, setProof] = useState("");
-	const [signals, setSignals] = useState("");
-	const [credential, setCredential] = useState(null);
+	const [proof, setProof] = useState(null);
+	const [signals, setSignals] = useState(null);
+	const [done, setDone] = useState(null);
 	const [isValid, setIsValid] = useState(false);
 	const [error, setError] = useState("");
 
@@ -36,6 +36,7 @@ function App() {
 			setIsValid(_isValid);
 			setProof(proof);
 			setSignals(signals);
+			setDone(proof);
 			if (_isValid) {
 				console.log("Valid credentials");
 			}
@@ -57,7 +58,6 @@ function App() {
 					const json = JSON.parse(event.target.result as string);
 					setProof(json.proof);
 					setSignals(json.public);
-					setCredential(json);
 				}
 				return;
 			} catch (error) {
@@ -78,7 +78,7 @@ function App() {
 			    Por favor increse su credential.json
 			</h4>
 			<h5>
-				{credential && <Text> {isValid ? "☑️ Usuario logueado correctamente" : "Por favor enviar credenciales"}</Text>}
+				{done && <Text> {isValid ? "😸 Usuario logueado correctamente" : <p style={{ color: "red" }}>😿 Credenciales no válidas</p>}</Text>}
 			</h5>
 			<div>
 				{/* Input for uploading two files */}
