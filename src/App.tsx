@@ -9,9 +9,26 @@ import "./App.css";
 // Install: npm install snarkjs
 const snarkjs = require("snarkjs");
 
+// From CA Issuers
+// URI:http://fdi.sinpe.fi.cr/repositorio/CA%20SINPE%20-%20PERSONA%20FISICA%20v2(2).crt
+export const productionPublicKeyHash =
+  '15100764808137121660160871414130376377652473835020058565951744372715764457760'
+
 // The verification requieres the verification zkey from the server side (Verifier)
 // And the public and proof files from the user (prover)
 const verifyProof = async (_verificationkey: string, publicSignals: any, proof: any) => {
+	if (! _verificationkey || ! publicSignals || ! proof) {
+		console.log('Empty inputs');
+		const res = false;
+		return res;
+	}
+	// First verify the goverment public key hash
+	let pubkeyHash = productionPublicKeyHash;
+
+	if (publicSignals[0] !== pubkeyHash) {
+		throw new Error('VerificationError: public key mismatch.');
+	}
+
 	const vkey_json = await fetch(_verificationkey).then(function (res) {
 		return res.json();
 	});
@@ -32,15 +49,23 @@ function App() {
 	let verificationKeyFile = "http://localhost:8000/vkey.json";
 
 	const runProofs = () => {
-		verifyProof(verificationKeyFile, signals, proof).then((_isValid) => {
-			setIsValid(_isValid);
-			setProof(proof);
-			setSignals(signals);
-			setDone(proof);
-			if (_isValid) {
-				console.log("Valid credentials");
-			}
-		});
+		try {
+			verifyProof(verificationKeyFile, signals, proof).then((_isValid) => {
+				setIsValid(_isValid);
+				setProof(proof);
+				setSignals(signals);
+				if (_isValid) {
+					console.log("Valid credentials");
+					setDone(proof);
+				} else {
+					console.log("Invalid credentials");
+					setDone("error" as any);
+				}
+			});
+		} catch (error) {
+			setIsValid(false);
+			console.log('Error in validation: '+error);
+		}
 	};
 
 	// Function to handle file uploads
