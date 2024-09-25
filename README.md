@@ -1,5 +1,6 @@
-# React + snarkjs
-This is a minimal project to get react (typescript) and snarkjs up and running. The circuit is the example from the readme of https://github.com/iden3/snarkjs.
+# ZK Firma Digital
+
+This is a minimal project to get react (typescript) and snarkjs up and running. 
 
 To install the necessary packages etc, run `yarn install`. 
 
