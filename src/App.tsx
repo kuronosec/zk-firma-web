@@ -58,6 +58,7 @@ function App() {
 					console.log("Valid credentials");
 					setDone(proof);
 				} else {
+					setIsValid(false);
 					console.log("Invalid credentials");
 					setDone("error" as any);
 				}
@@ -78,17 +79,25 @@ function App() {
 			// Read and parse the credential file
 			const credential_reader = new FileReader();
 			credential_reader.onload = (event) => {
-			try {
-				if(event.target != null && event.target.result != null) {
-					const json = JSON.parse(event.target.result as string);
-					setProof(json.proof);
-					setSignals(json.public);
+				try {
+					if(event.target != null && event.target.result != null) {
+						const json = JSON.parse(event.target.result as string);
+						if(json.proof != null && json.proof.signatureValue != null) {
+							setProof(json.proof.signatureValue.proof);
+							setSignals(json.proof.signatureValue.public);
+						} else {
+							setIsValid(false);
+							return;
+						}
+					} else {
+						setIsValid(false);
+						return;
+					}
+				} catch (error) {
+					setIsValid(false);
+					setError(error as string);
+					console.log("Error parsing JSON file: "+error);
 				}
-				return;
-			} catch (error) {
-				setError(error as string);
-				console.log("Error parsing JSON file: "+error);
-			}
 			};
 			credential_reader.readAsText(credential_file);
 		} else {
