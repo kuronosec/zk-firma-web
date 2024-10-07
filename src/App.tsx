@@ -46,7 +46,7 @@ function App() {
 	const [error, setError] = useState("");
 
 	// Retrieve verification key from server
-	let verificationKeyFile = "http://localhost:8000/vkey.json";
+	let verificationKeyFile = "http://app.sakundi.io:8000/vkey.json";
 
 	const runProofs = () => {
 		try {
