@@ -1,4 +1,4 @@
-# ZK Firma Digital
+# ZK Firma Digital Web
 
 This is a minimal project to get react (typescript) and snarkjs up and running. 
 
@@ -17,4 +17,5 @@ yarn start
 ```
 
 The circuit and related files are located in the folder `src/zkproof`. 
+
 
